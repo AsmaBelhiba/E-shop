@@ -1,0 +1,43 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build Artifacts
+target/
+build/
+bin/
+*.jar
+*.war
+*.ear
+
+# Frontend Dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/.env*
+
+# Logs
+*.log
+backend_log.txt
+backend_run_out.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+brain/
+docs/screenshots/*.png
+!docs/screenshots/admin_dashboard.png
+!docs/screenshots/admin_products.png
+!docs/screenshots/admin_categories.png
+!docs/screenshots/admin_suppliers.png
+!docs/screenshots/store_products.png
+!docs/screenshots/home_page.png
+!docs/screenshots/login_page.png
