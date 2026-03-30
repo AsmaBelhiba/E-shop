@@ -83,6 +83,13 @@ npm install
 npm run dev
 ```
 
+## 🏗️ Architectural Patterns: Directionality
+
+This project utilizes a strategic mix of **Unidirectional** and **Bidirectional** mappings within the JPA entity layer to balance performance and ease of navigation:
+
+- **Bidirectional Mappings**: Employed for the `Order` ⇄ `OrderItem` relationship. This enables seamless navigation from an Order to all its constituent items and back to the parent Order, which is critical for complex order processing and cascading updates.
+- **Unidirectional Mappings**: Employed for `Product` → `Category` and `Product` → `Supplier`. These associations are kept simple to minimize object graph complexity and coupling, as inversely navigating from a Category to all its products is handled via targeted repository queries rather than heavy JPA-managed collections.
+
 ---
 
 ## 🏗️ Project Structure
