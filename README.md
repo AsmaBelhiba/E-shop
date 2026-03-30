@@ -115,4 +115,4 @@ Projet_frontend/
 
 ---
 
-Developed with ❤️ for a premium e-commerce experience.
+Developed with ❤️ by Asma BELHIBA
