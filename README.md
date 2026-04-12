@@ -33,17 +33,29 @@ The landing page introduces the project's design philosophy, focusing on a premi
 A responsive grid showing products with dynamic filtering options.
 ![Store Products](./docs/screenshots/store_products.png)
 
-### Shopping Cart
-The newly implemented shopping cart allows users to review their selections before checkout.
-![Shopping Cart](./docs/screenshots/cart_page.png)
+### Shopping Cart Experience
+The fully integrated shopping cart allows for seamless item management and calculations.
+![Shopping Panier](./docs/screenshots/panier.png)
+
+### Order History
+Tracking past purchases with status updates and detailed line items.
+![Order History](./docs/screenshots/orders.png)
 
 ### Administrative Dashboard
-Overview of the business performance and inventory status.
+Real-time overview of business performance and key inventory metrics.
 ![Admin Dashboard](./docs/screenshots/admin_dashboard.png)
 
 ### Inventory & Stock Management
-The tools used by administrators to manage the entire product catalog.
+Complete tools for administrators to manage the global product catalog.
 ![Admin Products](./docs/screenshots/admin_products.png)
+
+### Supplier Network
+Managing the supply chain and vendor relationships efficiently.
+![Admin Suppliers](./docs/screenshots/admin_suppliers.png)
+
+### Category Taxonomy
+Organizing the store collections for a better navigation experience.
+![Admin Categories](./docs/screenshots/admin_categories.png)
 
 ---
 
