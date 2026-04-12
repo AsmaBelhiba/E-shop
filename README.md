@@ -1,125 +1,116 @@
-# E-Shop Pro: Full-Stack E-commerce Management Suite
+# E-Shop Pro: Full-Stack E-commerce Suite
 
-E-Shop Pro is a modern, premium full-stack e-commerce platform built with **Spring Boot 3** and **React**. It features a stunning administrative dashboard, robust inventory management, and a seamless storefront experience.
+This project is a comprehensive full-stack e-commerce application developed using **Spring Boot 3** for the backend and **React** for the frontend. It was designed to handle high-level inventory management and provides a seamless shopping experience for customers.
 
----
-
-## 🌟 Key Features
-
-### 🛒 Premium Storefront
-- **Modern Grid Layout**: A visually stunning product grid with high-end hover effects.
-- **Dynamic Filtering**: Filter products by category or search in real-time.
-- **Smart Image Fallbacks**: Automatic replacement of broken links with high-quality placeholder imagery to ensure a perfect UI at all times.
-- **Integrated Shopping Cart**: A fluid, context-aware shopping experience.
-
-### 🛡️ Administrative Control Center
-- **Executive Dashboard**: Real-time business metrics including inventory distribution and revenue estimates.
-- **Inventory Management**: Full CRUD operations for products with category and supplier associations.
-- **Taxonomy Engine**: Management of product categories to organize your catalog.
-- **Supplier Network**: A dedicated module to manage global suppliers and their contact details.
-- **Role-Based Security**: Secure JWT-based authentication for Customers and Administrators.
+The application is structured into two main parts: a responsive storefront for users and a robust administrative control center for managing products, categories, and suppliers.
 
 ---
 
-## 📸 Visual Tour
+## Technical Overview
 
-### 🏁 Landing Page
+### Core Stack
+- **Backend**: Spring Boot 3 / Java 23 (utilizing Spring Security with JWT for authentication).
+- **Frontend**: React 18+ (Vite) styled with Tailwind CSS and Vanilla CSS.
+- **Database**: MySQL 8.0 for persistent storage.
+- **Data Access**: Spring Data JPA / Hibernate for efficient relational mapping.
+
+### Main Modules
+- **Public Storefront**: A dynamic grid layout for browsing products with real-time search and category filtering.
+- **Shopping Cart**: A fully integrated cart system that handles item selection and calculations.
+- **Admin Dashboard**: Real-time business metrics and summary of current stock.
+- **Inventory Management**: Complete CRUD operations for products, including associations with suppliers and categories.
+- **Supplier & Category Engine**: Dedicated modules for organizing the product catalog and managing the supply chain.
+
+---
+
+## Visual Tour
+
+### Homepage & Hero Section
+The landing page introduces the project's design philosophy, focusing on a premium user experience.
 ![Home Page](./docs/screenshots/home_page.png)
 
-### 🛍️ Storefront Grid
+### Storefront Products
+A responsive grid showing products with dynamic filtering options.
 ![Store Products](./docs/screenshots/store_products.png)
 
-### 📊 Admin Dashboard
+### Shopping Cart
+The newly implemented shopping cart allows users to review their selections before checkout.
+![Shopping Cart](./docs/screenshots/cart_page.png)
+
+### Administrative Dashboard
+Overview of the business performance and inventory status.
 ![Admin Dashboard](./docs/screenshots/admin_dashboard.png)
 
-### 📦 Inventory Management
+### Inventory & Stock Management
+The tools used by administrators to manage the entire product catalog.
 ![Admin Products](./docs/screenshots/admin_products.png)
 
-### 🚚 Supplier Network
-![Admin Suppliers](./docs/screenshots/admin_suppliers.png)
+---
+
+## Architectural Choices
+
+One of the key focus areas of this project was the mapping strategy between entities. I used a mix of unidirectional and bidirectional relationships to balance performance and developer experience:
+
+- **Bidirectional Mappings**: Used for the `Order` ⇄ `OrderItem` relationship. This allows for easy navigation across the entire order graph, which is essential for complex order processing and cascading operations.
+- **Unidirectional Mappings**: Used for `Product` → `Category` and `Product` → `Supplier`. These were kept unidirectional to minimize coupling and avoid unnecessary complexity in the object graph, as reverse navigation is handled through repository queries.
 
 ---
 
-## 🛠️ Technical Stack
-
-### Backend
-- **Core**: Spring Boot 3
-- **Language**: Java 23 (JDK 23 recommended)
-- **Security**: Spring Security with JWT (JSON Web Token)
-- **Database**: MySQL 8.0
-- **Persistence**: Spring Data JPA / Hibernate
-- **Build Tool**: Maven
-
-### Frontend
-- **Framework**: React 18+ (Vite)
-- **Styling**: Tailwind CSS 4 & Vanilla CSS
-- **Icons**: Lucide React
-- **State Management**: React Context API
-- **Networking**: Axios
-
----
-
-## 🚀 Getting Started
+## Setup & Local Development
 
 ### Prerequisites
-- **JDK 23** installed
-- **Node.js** & npm installed
-- **MySQL** Server running
+- JDK 23
+- Node.js & npm
+- MySQL Server
 
-### 1. Database Setup
+### 1. Database Configuration
 1. Create a MySQL database named `projet_db`.
-2. Configure your credentials in `src/main/resources/application.properties`.
+2. Update the credentials in `src/main/resources/application.properties` if necessary.
 
-### 2. Running the Backend
+### 2. Run the Backend
 ```bash
+# Ensure JAVA_HOME points to JDK 23
 $env:JAVA_HOME="C:\Program Files\Java\jdk-23" 
 .\mvnw spring-boot:run
 ```
 
-### 3. Running the Frontend
+### 3. Run the Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## 🏗️ Architectural Patterns: Directionality
-
-This project utilizes a strategic mix of **Unidirectional** and **Bidirectional** mappings within the JPA entity layer to balance performance and ease of navigation:
-
-- **Bidirectional Mappings**: Employed for the `Order` ⇄ `OrderItem` relationship. This enables seamless navigation from an Order to all its constituent items and back to the parent Order, which is critical for complex order processing and cascading updates.
-- **Unidirectional Mappings**: Employed for `Product` → `Category` and `Product` → `Supplier`. These associations are kept simple to minimize object graph complexity and coupling, as inversely navigating from a Category to all its products is handled via targeted repository queries rather than heavy JPA-managed collections.
-
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```text
 Projet_frontend/
-├── src/main/java/              # Backend Source
+├── src/main/java/              # Spring Boot Backend
 │   └── org.example.projet_frontend/
-│       ├── config/             # Security & JWT Config
+│       ├── config/             # Security & Security Config
 │       ├── controllers/        # REST Endpoints
 │       ├── entities/           # JPA Models
-│       └── repositories/       # Data Access Layer
-├── frontend/                   # React Source
+│       └── repositories/       # Data Access
+├── frontend/                   # React Frontend (Vite)
 │   ├── src/
-│   │   ├── components/         # Reusable UI
+│   │   ├── components/         # UI Elements
 │   │   ├── pages/              # View Routes
-│   │   ├── services/           # API Interaction
-│   │   └── context/            # Global State
-└── docs/screenshots/           # Visual Assets
+│   │   ├── services/           # API Logic
+│   │   └── context/            # Auth & State
+└── docs/screenshots/           # Project Images
 ```
 
 ---
 
-## 🧪 Testing Credentials
+## Test Credentials
 
-| Role | Email | Password |
+| Account Type | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | `admin@eshop.com` | `admin123` |
+| **Administrator** | `admin@eshop.com` | `admin123` |
 | **Customer** | `user@example.com` | `user123` |
 
 ---
 
-Developed with ❤️ by Asma BELHIBA
+*Developed by Asma BELHIBA*
