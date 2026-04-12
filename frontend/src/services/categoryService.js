@@ -41,6 +41,7 @@ const deleteCategory = (id) => {
 export default {
     getAllCategories,
     getCategoryById,
+    getCategoryCount,
     createCategory,
     updateCategory,
     deleteCategory,

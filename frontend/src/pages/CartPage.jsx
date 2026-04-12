@@ -1,4 +1,5 @@
 import { useCart } from '../context/CartContext';
+import orderService from '../services/orderService';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, CreditCard, ShieldCheck, Truck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -8,12 +9,18 @@ const CartPage = () => {
     const navigate = useNavigate();
 
     const handleCheckout = () => {
+        const orderItems = cart.map(item => ({
+            product: { id: item.id },
+            quantity: item.quantity,
+            price: item.price
+        }));
+
         toast.promise(
-            new Promise((resolve) => setTimeout(resolve, 2000)),
+            orderService.checkout(orderItems),
             {
                 loading: 'Finalizing purchase...',
                 success: 'Purchase successful!',
-                error: 'Checkout failed',
+                error: (err) => `Checkout failed: ${err.response?.data?.message || err.message}`,
             },
             {
                 style: { borderRadius: '20px', background: '#1f2937', color: '#fff', fontWeight: 'bold' }
