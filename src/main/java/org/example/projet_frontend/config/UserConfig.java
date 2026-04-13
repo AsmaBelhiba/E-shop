@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.stream.Collectors;
+
 @Configuration
 public class UserConfig {
 
@@ -23,7 +26,9 @@ public class UserConfig {
                 .map(userEntity -> org.springframework.security.core.userdetails.User
                         .withUsername(userEntity.getEmail())
                         .password(userEntity.getPassword())
-                        .roles(userEntity.getRole().replace("ROLE_", ""))
+                        .authorities(userEntity.getRoles().stream()
+                                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                                .collect(Collectors.toList()))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     }

@@ -14,8 +14,10 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
-    const { logout } = useAuth();
+    const { logout, role } = useAuth();
     const location = useLocation();
+    
+    const currentRole = role || localStorage.getItem('userRole') || 'ROLE_USER';
 
     const menuItems = [
         { name: 'Overview', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -23,6 +25,10 @@ const Sidebar = () => {
         { name: 'Taxonomy', path: '/admin/categories', icon: Tags },
         { name: 'Suppliers', path: '/admin/suppliers', icon: Truck },
     ];
+
+    if (currentRole === 'ROLE_SUPERADMIN') {
+        menuItems.push({ name: 'Human Resources', path: '/admin/users', icon: Users });
+    }
 
     return (
         <aside className="w-80 h-[calc(100vh-6rem)] sticky top-24 bg-white border-r border-gray-50 flex flex-col p-8 space-y-12 transition-all duration-700">

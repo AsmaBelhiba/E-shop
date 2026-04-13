@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("SUPERADMIN")
                         .requestMatchers("/api/orders/all").hasRole("ADMIN")
                         .requestMatchers("/api/orders/**").hasRole("USER")
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**", "/api/products",
