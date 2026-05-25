@@ -16,18 +16,26 @@ const Navbar = ({ onMenuClick }) => {
         navigate('/login');
     };
 
-    const isActuallyAdmin = user?.role === 'ROLE_ADMIN' || localStorage.getItem('userRole') === 'ROLE_ADMIN';
+    const currentUser = JSON.parse(localStorage.getItem('user')) || user;
+    const availableRoles = currentUser?.roles || [];
+    const isActuallyAdmin = availableRoles.includes('ROLE_ADMIN') || availableRoles.includes('ROLE_SUPERADMIN');
     const currentRole = role || localStorage.getItem('userRole') || 'ROLE_USER';
 
     const toggleRole = (newRole) => {
         if (setRole) setRole(newRole);
         localStorage.setItem('userRole', newRole);
         setShowRoleSelector(false);
-        if (newRole === 'ROLE_ADMIN') {
+        if (newRole === 'ROLE_ADMIN' || newRole === 'ROLE_SUPERADMIN') {
             navigate('/admin/dashboard');
         } else {
             navigate('/customer/dashboard');
         }
+    };
+
+    const getRoleLabel = (roleName) => {
+        if (roleName === 'ROLE_SUPERADMIN') return 'SuperAdmin';
+        if (roleName === 'ROLE_ADMIN') return 'Admin';
+        return 'Customer';
     };
 
     return (
@@ -56,13 +64,13 @@ const Navbar = ({ onMenuClick }) => {
                             <Link to="/products" className="text-[13px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-blue-600 transition-all">Products</Link>
                             <Link to="/categories" className="text-[13px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-blue-600 transition-all">Categories</Link>
                             {user && (
-                                <Link to={currentRole === 'ROLE_ADMIN' ? "/admin/dashboard" : "/customer/dashboard"} className="text-[13px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-blue-600 transition-all">Dashboard</Link>
+                                <Link to={(currentRole === 'ROLE_ADMIN' || currentRole === 'ROLE_SUPERADMIN') ? "/admin/dashboard" : "/customer/dashboard"} className="text-[13px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-blue-600 transition-all">Dashboard</Link>
                             )}
                         </div>
                     </div>
 
                     <div className="flex items-center gap-6">
-                        {currentRole !== 'ROLE_ADMIN' && (
+                        {currentRole === 'ROLE_USER' && (
                             <Link to="/cart" className="relative p-4 text-gray-900 bg-gray-50/50 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all group">
                                 <ShoppingCart size={24} />
                                 {cartCount > 0 && (
@@ -83,24 +91,21 @@ const Navbar = ({ onMenuClick }) => {
                                             onClick={() => setShowRoleSelector(!showRoleSelector)}
                                             className="flex items-center gap-2 px-5 py-3 bg-gray-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all cursor-pointer shadow-xl shadow-gray-200"
                                         >
-                                            <span>{currentRole === 'ROLE_ADMIN' ? 'Admin' : 'Customer'}</span>
+                                            <span>{getRoleLabel(currentRole)}</span>
                                             <ChevronDown size={14} className={`transition-transform duration-300 ${showRoleSelector ? 'rotate-180' : ''}`} />
                                         </button>
 
                                         {showRoleSelector && (
                                             <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 py-3 animate-in fade-in slide-in-from-top-2 duration-300 ring-1 ring-black/5">
-                                                <button
-                                                    onClick={() => toggleRole('ROLE_ADMIN')}
-                                                    className={`w-full text-left px-5 py-3 text-[11px] font-black uppercase tracking-widest transition-colors ${currentRole === 'ROLE_ADMIN' ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
-                                                >
-                                                    Admin View
-                                                </button>
-                                                <button
-                                                    onClick={() => toggleRole('ROLE_USER')}
-                                                    className={`w-full text-left px-5 py-3 text-[11px] font-black uppercase tracking-widest transition-colors ${currentRole === 'ROLE_USER' ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
-                                                >
-                                                    Customer View
-                                                </button>
+                                                {availableRoles.sort().reverse().map(r => (
+                                                    <button
+                                                        key={r}
+                                                        onClick={() => toggleRole(r)}
+                                                        className={`w-full text-left px-5 py-3 text-[11px] font-black uppercase tracking-widest transition-colors ${currentRole === r ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
+                                                    >
+                                                        {getRoleLabel(r)} View
+                                                    </button>
+                                                ))}
                                             </div>
                                         )}
                                     </div>

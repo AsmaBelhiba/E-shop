@@ -85,10 +85,22 @@ const UserOrders = () => {
                                 </div>
 
                                 <div className="flex flex-col md:items-end gap-2 relative z-10">
-                                    <span className="text-3xl font-black text-gray-900 italic tracking-tighter">${order.totalAmount || '0.00'}</span>
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black uppercase tracking-widest">
-                                        <CheckCircle size={14} />
-                                        Delivered
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-3xl font-black text-gray-900 italic tracking-tighter">
+                                            ${((order.totalAmount || 0) + (order.deliveryFees || 0)).toFixed(2)}
+                                        </span>
+                                        <span className="text-[10px] font-bold text-gray-400">
+                                            Incl. ${(order.deliveryFees || 0).toFixed(2)} delivery
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest">
+                                            {order.paymentType || 'COD'}
+                                        </div>
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black uppercase tracking-widest">
+                                            <CheckCircle size={14} />
+                                            Confirmed
+                                        </div>
                                     </div>
                                 </div>
 

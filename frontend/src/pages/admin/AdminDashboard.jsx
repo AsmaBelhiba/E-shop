@@ -11,6 +11,7 @@ import productService from '../../services/productService';
 import categoryService from '../../services/categoryService';
 import userService from '../../services/userService';
 import supplierService from '../../services/supplierService';
+import orderService from '../../services/orderService';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -18,7 +19,7 @@ const AdminDashboard = () => {
         categories: 0,
         users: 0,
         suppliers: 0,
-        revenue: 12540.50, // Mock revenue as we don't have a real total yet
+        revenue: 0,
     });
     const [chartData, setChartData] = useState([]);
     const [pieData, setPieData] = useState([]);
@@ -29,16 +30,19 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const [pCount, cCount, uCount, sCount, allProducts, allCategories] = await Promise.all([
+                const [pCount, cCount, uCount, sCount, allProducts, allCategories, allOrders] = await Promise.all([
                     productService.getProductCount(),
                     categoryService.getCategoryCount(),
                     userService.getAllUsers().then(u => u.length),
                     supplierService.getSupplierCount(),
                     productService.getAllProducts(),
-                    categoryService.getAllCategories()
+                    categoryService.getAllCategories(),
+                    orderService.getAllOrders()
                 ]);
 
-                setStats(s => ({ ...s, products: pCount, categories: cCount, users: uCount, suppliers: sCount }));
+                const realRevenue = allOrders.reduce((sum, order) => sum + (order.totalAmount || 0) + (order.deliveryFees || 0), 0);
+
+                setStats(s => ({ ...s, products: pCount, categories: cCount, users: uCount, suppliers: sCount, revenue: realRevenue }));
 
                 // Prepare Chart Data (Products per category)
                 const categoryMap = {};

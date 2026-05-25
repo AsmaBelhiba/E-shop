@@ -1,4 +1,4 @@
-package org.example.projet_frontend.dto;
+package org.example.projet_frontend.service;
 
 public class AuthRequest {
     private String email;

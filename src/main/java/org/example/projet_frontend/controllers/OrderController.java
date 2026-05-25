@@ -5,17 +5,18 @@ import org.example.projet_frontend.entities.OrderItem;
 import org.example.projet_frontend.entities.User;
 import org.example.projet_frontend.repositories.OrderRepo;
 import org.example.projet_frontend.repositories.UserRepo;
+import org.example.projet_frontend.config.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin("*")
 public class OrderController {
 
     @Autowired
@@ -24,8 +25,11 @@ public class OrderController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/checkout")
-    public ResponseEntity<?> checkout(@RequestBody List<OrderItem> items) {
+    public ResponseEntity<?> checkout(@Valid @RequestBody List<OrderItem> items) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findByEmail(email).orElseThrow();
 
@@ -41,7 +45,16 @@ public class OrderController {
         order.setItems(items);
         order.setTotalAmount(total);
 
+        // Delivery Fee Calculation: Free for orders > $200
+        double deliveryFees = (total > 200) ? 0 : 10.0;
+        order.setDeliveryFees(deliveryFees);
+        order.setPaymentType("Cash on delivery");
+
         orderRepo.save(order);
+
+        // Send Confirmation Email
+        emailService.sendOrderConfirmationEmail(order);
+
         return ResponseEntity.ok(order);
     }
 

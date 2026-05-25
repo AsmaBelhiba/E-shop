@@ -3,7 +3,8 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080/api/users';
 
 const getAuthHeader = () => {
-    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = user?.token;
     return { Authorization: `Bearer ${token}` };
 };
 
@@ -13,6 +14,10 @@ const getAllUsers = () => {
 
 const getAllRoles = () => {
     return axios.get(`${API_URL}/roles`, { headers: getAuthHeader() });
+};
+
+const createUser = (userData) => {
+    return axios.post(API_URL, userData, { headers: getAuthHeader() });
 };
 
 const deleteUser = (id) => {
@@ -31,6 +36,7 @@ const updateUserRoles = (id, roleNames) => {
 export default {
     getAllUsers,
     getAllRoles,
+    createUser,
     deleteUser,
     updateUserRoles
 };

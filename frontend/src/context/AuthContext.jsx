@@ -17,16 +17,16 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = async (email, password, requestedRole = null) => {
-        const data = await authService.login(email, password, requestedRole);
+    const login = async (email, password) => {
+        const data = await authService.login(email, password);
         setUser(data);
         setRoleState(data.role);
         localStorage.setItem('userRole', data.role);
         return data;
     };
 
-    const register = async (email, password, fullName) => {
-        return authService.register(email, password, fullName);
+    const register = async (email, fullName) => {
+        return authService.register(email, fullName);
     };
 
     const logout = () => {

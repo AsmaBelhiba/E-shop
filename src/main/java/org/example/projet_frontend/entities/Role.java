@@ -13,13 +13,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Category {
-
+@Table(name = "roles")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @NotBlank(message = "Category name is mandatory")
-    @Size(min = 2, max = 100, message = "Category name must be between 2 and 100 characters")
+    @NotBlank(message = "Role name is mandatory")
+    @Size(min = 2, max = 50, message = "Role name must be between 2 and 50 characters")
+    @Column(unique = true, nullable = false)
     private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

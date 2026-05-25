@@ -12,18 +12,21 @@ import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import SetPassword from './pages/SetPassword';
 import Store from './pages/Store';
 import ProductPage from './pages/ProductPage';
 import Categories from './pages/Categories';
 import CartPage from './pages/CartPage';
 import UserOrders from './pages/UserOrders';
 import CustomerDashboard from './pages/CustomerDashboard';
+import NotFound from './pages/NotFound';
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminSuppliers from './pages/admin/AdminSuppliers';
+import AdminOrders from './pages/admin/AdminOrders';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, role, loading } = useAuth();
@@ -71,6 +74,7 @@ function App() {
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/set-password" element={<SetPassword />} />
 
               {/* Customer Routes (General) */}
               <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
@@ -84,11 +88,7 @@ function App() {
                   <MainLayout><CustomerDashboard /></MainLayout>
                 </ProtectedRoute>
               } />
-              <Route path="/cart" element={
-                <ProtectedRoute allowedRoles={['ROLE_USER']}>
-                  <MainLayout><CartPage /></MainLayout>
-                </ProtectedRoute>
-              } />
+              <Route path="/cart" element={<MainLayout><CartPage /></MainLayout>} />
               <Route path="/purchases" element={
                 <ProtectedRoute allowedRoles={['ROLE_USER']}>
                   <MainLayout><UserOrders /></MainLayout>
@@ -105,13 +105,14 @@ function App() {
                       <Route path="categories" element={<AdminCategories />} />
                       <Route path="users" element={<AdminUsers />} />
                       <Route path="suppliers" element={<AdminSuppliers />} />
+                      <Route path="orders" element={<AdminOrders />} />
                     </Routes>
                   </AdminLayout>
                 </ProtectedRoute>
               } />
 
               {/* Generic Fallback */}
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster position="bottom-right" reverseOrder={false} />
           </div>

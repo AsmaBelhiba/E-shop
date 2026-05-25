@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ProductRepo extends JpaRepository<Product, Long> {
     List<Product> findTop4ByOrderByIdDesc();
+    List<Product> findByNameIgnoreCase(String name);
 }

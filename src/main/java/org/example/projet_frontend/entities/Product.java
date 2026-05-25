@@ -1,86 +1,45 @@
 package org.example.projet_frontend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotBlank(message = "Product name is mandatory")
+    @Size(min = 2, max = 200, message = "Product name must be between 2 and 200 characters")
     private String name;
+
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
     private double price;
 
+    @NotNull(message = "Category is mandatory")
     @ManyToOne
     private Category category;
 
+    @NotNull(message = "Supplier is mandatory")
     @ManyToOne
     private Supplier supplier;
 
+    @NotBlank(message = "Description is mandatory")
+    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
     private String description;
+
+    @NotBlank(message = "Image URL is mandatory")
     private String imageUrl;
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Product() {
-    }
-
-    public Product(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

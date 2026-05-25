@@ -1,4 +1,5 @@
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import orderService from '../services/orderService';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, CreditCard, ShieldCheck, Truck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,9 +7,18 @@ import { toast } from 'react-hot-toast';
 
 const CartPage = () => {
     const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+    const { user } = useAuth();
     const navigate = useNavigate();
+    const total = Number(getCartTotal());
+    const deliveryFee = total > 200 ? 0 : 10;
+    const finalTotal = total + deliveryFee;
 
     const handleCheckout = () => {
+        if (!user) {
+            toast.error('Please login to checkout');
+            navigate('/login');
+            return;
+        }
         const orderItems = cart.map(item => ({
             product: { id: item.id },
             quantity: item.quantity,
@@ -116,16 +126,20 @@ const CartPage = () => {
                             <div className="space-y-6">
                                 <div className="flex justify-between items-center text-sm font-medium text-gray-400">
                                     <span>Subtotal</span>
-                                    <span className="text-white font-bold">${getCartTotal()}</span>
+                                    <span className="text-white font-bold">${total.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm font-medium text-gray-400">
                                     <span>Shipping</span>
-                                    <span className="text-emerald-400 font-bold uppercase tracking-widest text-[10px]">Free Delivery</span>
+                                    {deliveryFee === 0 ? (
+                                        <span className="text-emerald-400 font-bold uppercase tracking-widest text-[10px]">Free Delivery</span>
+                                    ) : (
+                                        <span className="text-white font-bold">${deliveryFee.toFixed(2)}</span>
+                                    )}
                                 </div>
                                 <div className="h-px bg-white/10" />
                                 <div className="flex justify-between items-end">
                                     <span className="text-sm font-black uppercase tracking-widest text-gray-400 leading-none">Total Value</span>
-                                    <span className="text-4xl font-black text-white italic tracking-tighter leading-none">${getCartTotal()}</span>
+                                    <span className="text-4xl font-black text-white italic tracking-tighter leading-none">${finalTotal.toFixed(2)}</span>
                                 </div>
                             </div>
 

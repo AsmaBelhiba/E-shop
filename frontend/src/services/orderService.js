@@ -7,16 +7,19 @@ const getAuthHeader = () => {
     return user && user.token ? { Authorization: `Bearer ${user.token}` } : {};
 };
 
-const checkout = (items) => {
-    return axios.post(`${API_URL}/checkout`, items, { headers: getAuthHeader() });
+const checkout = async (items) => {
+    const response = await axios.post(`${API_URL}/checkout`, items, { headers: getAuthHeader() });
+    return response.data;
 };
 
-const getMyOrders = () => {
-    return axios.get(`${API_URL}/my`, { headers: getAuthHeader() });
+const getMyOrders = async () => {
+    const response = await axios.get(`${API_URL}/my`, { headers: getAuthHeader() });
+    return response.data;
 };
 
-const getAllOrders = () => {
-    return axios.get(`${API_URL}/all`, { headers: getAuthHeader() });
+const getAllOrders = async () => {
+    const response = await axios.get(`${API_URL}/all`, { headers: getAuthHeader() });
+    return response.data;
 };
 
 export default { checkout, getMyOrders, getAllOrders };

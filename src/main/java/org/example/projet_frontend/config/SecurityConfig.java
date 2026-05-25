@@ -41,13 +41,15 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/set-password", "/auth/validate-token").permitAll()
                         .requestMatchers("/api/users/**").hasRole("SUPERADMIN")
-                        .requestMatchers("/api/orders/all").hasRole("ADMIN")
-                        .requestMatchers("/api/orders/**").hasRole("USER")
+                        .requestMatchers("/api/orders/all").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN", "SUPERADMIN")
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**", "/api/products",
                                 "/api/categories/**", "/api/categories", "/api/suppliers/**", "/api/suppliers")
                         .permitAll()
-                        .requestMatchers("/api/products/**", "/api/products", "/api/categories/**", "/api/categories", "/api/suppliers/**", "/api/suppliers").hasRole("ADMIN")
+                        .requestMatchers("/api/products/**", "/api/products", "/api/categories/**", "/api/categories", "/api/suppliers/**", "/api/suppliers")
+                        .hasAnyRole("ADMIN", "SUPERADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

@@ -3,6 +3,7 @@ package org.example.projet_frontend.controllers;
 import org.example.projet_frontend.entities.Supplier;
 import org.example.projet_frontend.repositories.SupplierRepo;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class SupplierController {
     }
 
     @PostMapping
-    public Supplier createSupplier(@RequestBody Supplier supplier) {
+    public Supplier createSupplier(@Valid @RequestBody Supplier supplier) {
         return supplierRepo.save(supplier);
     }
 
     @PutMapping("/{id}")
-    public Supplier updateSupplier(@PathVariable Long id, @RequestBody Supplier supplierDetails) {
+    public Supplier updateSupplier(@PathVariable Long id, @Valid @RequestBody Supplier supplierDetails) {
         Supplier supplier = supplierRepo.findById(id).orElse(null);
         if (supplier != null) {
             supplier.setName(supplierDetails.getName());

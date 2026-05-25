@@ -3,12 +3,12 @@ package org.example.projet_frontend.controllers;
 import org.example.projet_frontend.entities.Product;
 import org.example.projet_frontend.repositories.ProductRepo;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin("*")
 public class ProductController {
 
     private final ProductRepo productRepo;
@@ -38,12 +38,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody Product product) {
         return productRepo.save(product);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product productDetails) {
         Product product = productRepo.findById(id).orElse(null);
         if (product != null) {
             product.setName(productDetails.getName());

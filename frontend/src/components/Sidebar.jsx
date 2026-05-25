@@ -9,7 +9,8 @@ import {
     ChevronRight,
     ArrowUpRight,
     TrendingUp,
-    Truck
+    Truck,
+    ShoppingBag
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -23,6 +24,7 @@ const Sidebar = () => {
         { name: 'Overview', path: '/admin/dashboard', icon: LayoutDashboard },
         { name: 'Inventory', path: '/admin/products', icon: Package },
         { name: 'Taxonomy', path: '/admin/categories', icon: Tags },
+        { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
         { name: 'Suppliers', path: '/admin/suppliers', icon: Truck },
     ];
 
